@@ -3,3 +3,8 @@ C:\Users\Matthijs\OneDrive\Documents\UU\MSO\lab3\mso-lab3-master\bin\Debug\Lab3.
 C:\Users\Matthijs\OneDrive\Documents\UU\MSO\lab3\mso-lab3-master\obj\x86\Debug\Lab3.csprojResolveAssemblyReference.cache
 C:\Users\Matthijs\OneDrive\Documents\UU\MSO\lab3\mso-lab3-master\obj\x86\Debug\Lab3.exe
 C:\Users\Matthijs\OneDrive\Documents\UU\MSO\lab3\mso-lab3-master\obj\x86\Debug\Lab3.pdb
+C:\Users\Timo\Documents\MSO\mso-lab3-master\obj\x86\Debug\Lab3.exe
+C:\Users\Timo\Documents\MSO\mso-lab3-master\obj\x86\Debug\Lab3.pdb
+C:\Users\Timo\Documents\MSO\mso-lab3-master\bin\Debug\Lab3.exe
+C:\Users\Timo\Documents\MSO\mso-lab3-master\bin\Debug\Lab3.pdb
+C:\Users\Timo\Documents\MSO\mso-lab3-master\obj\x86\Debug\Lab3.csprojResolveAssemblyReference.cache

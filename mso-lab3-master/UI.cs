@@ -18,102 +18,19 @@ namespace Lab3
 		RadioButton fortyDiscount;
 		ComboBox payment;
 		Button pay;
-        Dictionary<UIPayment, ICard> payMethods;
 
 		public UI ()
 		{
 			initializeControls();
-            
 		}
-
-        private float calcPrice(UIInfo info, int tableColumn)
-        {
-            float price = 0;
-
-            // Get number of tariefeenheden
-            int tariefeenheden = Tariefeenheden.getTariefeenheden(info.From, info.To);
-
-            PricingTable.getPrice(tariefeenheden, tableColumn);
-
-            if (info.Way == UIWay.Return)
-            {
-                price *= 2;
-            }
-            // Add 50 cent if paying with credit card
-            if (info.Payment == UIPayment.CreditCard)
-            {
-                price += 0.50f;
-            }
-            return price;
-        }
-
-        private int calcColumn(UIInfo info)
-        {
-            Dictionary<UIClass, int> classInfo = new Dictionary<UIClass, int>();
-            classInfo.Add(UIClass.FirstClass, 3);
-            classInfo.Add(UIClass.SecondClass, 0);
-
-            Dictionary<UIDiscount, int> discountInfo = new Dictionary<UIDiscount, int>();
-            discountInfo.Add(UIDiscount.FortyDiscount, 1);
-            discountInfo.Add(UIDiscount.TwentyDiscount, 2);
-
-            return classInfo[info.Class] + discountInfo[info.Discount];
-            //// First based on class
-            
-            //// Then, on the discount
-            //switch (info.Discount)
-            //{
-            //    case UIDiscount.TwentyDiscount:
-            //        column += 1;
-            //        break;
-            //    case UIDiscount.FortyDiscount:
-            //        column += 2;
-            //        break;
-            //}
-            //return column;
-        }
 
 		private void handlePayment(UIInfo info)
 		{
-            // *************************************
-            // This is the code you need to refactor
-            // *************************************
-            payMethods = new Dictionary<UIPayment, ICard>();
-            payMethods.Add(UIPayment.Cash, new CoinMachineAdapter());
-            payMethods.Add(UIPayment.CreditCard, new CreditCard());
-            payMethods.Add(UIPayment.DebitCard, new DebitCard());
-            // Compute the column in the table based on choices
-            int tableColumn = calcColumn(info);
-            
-            // Get price
-            float price = calcPrice(info, tableColumn);
-
-            // Pay
-            MakePayment(payMethods[info.Payment], price);
-			//switch (info.Payment) {
-			//case UIPayment.CreditCard:
-			//	CreditCard c = new CreditCard ();
-   //             MakePayment(c, price);
-   //             break;
-			//case UIPayment.DebitCard:
-			//	DebitCard d = new DebitCard ();
-   //             MakePayment(d, price);
-   //             break;
-			//case UIPayment.Cash:
-			//	ICard coin = new CoinMachineAdapter ();
-   //             MakePayment(coin, price);
-   //             break;
-                    
-			//}
-            
+            //Create a sale
+            Sale sale = new Sale(info);
         }
 
-        private void MakePayment(ICard c, float price)
-        {
-            c.Connect ();
-            int dcid = c.BeginTransaction (price);
-            c.EndTransaction (dcid);
-        }
+        
         #region Set-up -- don't look at it
         private void initializeControls()
 		{
@@ -282,6 +199,7 @@ namespace Lab3
 				(string)toBox.SelectedItem,
 				cls, way, dis, pment);
 		}
+        
 #endregion
 	}
 }

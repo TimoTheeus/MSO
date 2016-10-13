@@ -37,16 +37,17 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PaymentMethods.cs" />
+    <Compile Include="PaymentFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sale.cs" />
     <Compile Include="UI.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Tariefeenheden.cs" />
     <Compile Include="UIInfo.cs" />
     <Compile Include="PricingTable.cs" />
-    <Compile Include="Card.cs" />
+    <Compile Include="Payment.cs" />
     <Compile Include="CoinMachine.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

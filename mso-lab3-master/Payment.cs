@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace Lab3
 {
-	public interface ICard
+	public interface PaymentMethods
 	{
 		void Connect();
 		void Disconnect();
@@ -13,7 +13,7 @@ namespace Lab3
 	}
 
 	// Mock CreditCard implementation
-	public class CreditCard : ICard
+	public class CreditCard : PaymentMethods
 	{
 		public void Connect ()
 		{
@@ -50,7 +50,7 @@ namespace Lab3
 	}
 
 	// Mock CreditCard implementation
-	public class DebitCard : ICard
+	public class DebitCard : PaymentMethods
 	{
 		public void Connect ()
 		{
@@ -85,5 +85,38 @@ namespace Lab3
 			MessageBox.Show("Cancel transaction 1");
 		}
 	}
+    class CoinMachineAdapter : PaymentMethods
+    {
+        IKEAMyntAtare2000 coinMachine = new IKEAMyntAtare2000();
+
+        public void Connect()
+        {
+            coinMachine.starta();
+        }
+
+        public void Disconnect()
+        {
+
+        }
+
+        public int BeginTransaction(float amount)
+        {
+            coinMachine.betala((int)Math.Round(amount * 100));
+            return 1;
+        }
+
+        public bool EndTransaction(int id)
+        {
+            coinMachine.stoppa();
+            return true;
+        }
+
+        public void CancelTransaction(int id)
+        {
+
+        }
+
+
+    }
 }
 
