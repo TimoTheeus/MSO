@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace Lab3
 {
@@ -17,15 +18,17 @@ namespace Lab3
 		RadioButton fortyDiscount;
 		ComboBox payment;
 		Button pay;
+        Dictionary<UIPayment, ICard> payMethods;
 
 		public UI ()
 		{
-			initializeControls ();
+			initializeControls();
+            
 		}
 
         private float calcPrice(UIInfo info, int tableColumn)
         {
-            float x = 0;
+            float price = 0;
 
             // Get number of tariefeenheden
             int tariefeenheden = Tariefeenheden.getTariefeenheden(info.From, info.To);
@@ -34,70 +37,74 @@ namespace Lab3
 
             if (info.Way == UIWay.Return)
             {
-                x *= 2;
+                price *= 2;
             }
             // Add 50 cent if paying with credit card
             if (info.Payment == UIPayment.CreditCard)
             {
-                x += 0.50f;
+                price += 0.50f;
             }
-            return x;
+            return price;
         }
 
         private int calcColumn(UIInfo info)
         {
-            int x = 0;
-            // First based on class
-            switch (info.Class)
-            {
-                case UIClass.FirstClass:
-                    x = 3;
-                    break;
-                default:
-                    x = 0;
-                    break;
-            }
-            // Then, on the discount
-            switch (info.Discount)
-            {
-                case UIDiscount.TwentyDiscount:
-                    x += 1;
-                    break;
-                case UIDiscount.FortyDiscount:
-                    x += 2;
-                    break;
-            }
-            return x;
+            Dictionary<UIClass, int> classInfo = new Dictionary<UIClass, int>();
+            classInfo.Add(UIClass.FirstClass, 3);
+            classInfo.Add(UIClass.SecondClass, 0);
+
+            Dictionary<UIDiscount, int> discountInfo = new Dictionary<UIDiscount, int>();
+            discountInfo.Add(UIDiscount.FortyDiscount, 1);
+            discountInfo.Add(UIDiscount.TwentyDiscount, 2);
+
+            return classInfo[info.Class] + discountInfo[info.Discount];
+            //// First based on class
+            
+            //// Then, on the discount
+            //switch (info.Discount)
+            //{
+            //    case UIDiscount.TwentyDiscount:
+            //        column += 1;
+            //        break;
+            //    case UIDiscount.FortyDiscount:
+            //        column += 2;
+            //        break;
+            //}
+            //return column;
         }
 
 		private void handlePayment(UIInfo info)
 		{
-			// *************************************
-			// This is the code you need to refactor
-			// *************************************
-            
-			// Compute the column in the table based on choices
-			int tableColumn = calcColumn(info);
+            // *************************************
+            // This is the code you need to refactor
+            // *************************************
+            payMethods = new Dictionary<UIPayment, ICard>();
+            payMethods.Add(UIPayment.Cash, new CoinMachineAdapter());
+            payMethods.Add(UIPayment.CreditCard, new CreditCard());
+            payMethods.Add(UIPayment.DebitCard, new DebitCard());
+            // Compute the column in the table based on choices
+            int tableColumn = calcColumn(info);
             
             // Get price
             float price = calcPrice(info, tableColumn);
 
-			// Pay
-			switch (info.Payment) {
-			case UIPayment.CreditCard:
-				CreditCard c = new CreditCard ();
-                MakePayment(c, price);
-                break;
-			case UIPayment.DebitCard:
-				DebitCard d = new DebitCard ();
-                MakePayment(d, price);
-                break;
-			case UIPayment.Cash:
-				ICard coin = new CoinMachineAdapter ();
-                MakePayment(coin, price);
-                break;
+            // Pay
+            MakePayment(payMethods[info.Payment], price);
+			//switch (info.Payment) {
+			//case UIPayment.CreditCard:
+			//	CreditCard c = new CreditCard ();
+   //             MakePayment(c, price);
+   //             break;
+			//case UIPayment.DebitCard:
+			//	DebitCard d = new DebitCard ();
+   //             MakePayment(d, price);
+   //             break;
+			//case UIPayment.Cash:
+			//	ICard coin = new CoinMachineAdapter ();
+   //             MakePayment(coin, price);
+   //             break;
                     
-			}
+			//}
             
         }
 
